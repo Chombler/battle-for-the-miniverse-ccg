@@ -22,13 +22,22 @@ server.listen(port_to_listen, () => {
   console.log(`Listening on ${port_to_listen}`);
 });
 
-//When a connection is made, logs the following response
+//When a connection is made, starts listening for responses from the server
 io.on('connection', function(client) {
   console.log('Connection made');
+
+	client.on('mouseclick', function(message, x, y) {
+	  console.log(message, x, y);
+	});
+
+	client.on('mouselift', function(message, x, y) {
+	  console.log(message, x, y);
+	});
 });
 
-//Testing to ensure socketio works
+
+/*Testing to ensure socketio works
 setInterval(function() {
 	console.log("Attempting message send");
   io.sockets.emit('message', 'hi!');
-}, 1000);
+}, 1000);*/
