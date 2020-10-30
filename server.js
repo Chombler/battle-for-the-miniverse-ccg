@@ -10,11 +10,11 @@ var io = socketio(server); //Creates Socket.io instance related to the http serv
 
 var port_to_listen = process.env.PORT || 3000; //Specifies which port to listen on
 
-app.use('/client', express.static('client'));
+app.use('/game', express.static('game'));
 
 //Default page displayed, always sent to game.html
 app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/client/game.html');
+  res.sendFile(__dirname + '/views/index.html');
 });
 
 //Tells the server to listen for any incoming inconnections
@@ -34,10 +34,3 @@ io.on('connection', function(client) {
 	  console.log(message, x, y);
 	});
 });
-
-
-/*Testing to ensure socketio works
-setInterval(function() {
-	console.log("Attempting message send");
-  io.sockets.emit('message', 'hi!');
-}, 1000);*/
