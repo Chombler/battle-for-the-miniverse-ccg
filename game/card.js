@@ -22,6 +22,43 @@ export class Card{
 		return(false);
 	}
 
+	setLocation(x, y){
+		this.x = x;
+		this.y = y;
+	}
+
+	setSize(width, height){
+		this.width = width;
+		this.height = height;
+	}
+
+	setLocationAndSize(x, y, width, height){
+		this.setLocation(x, y);
+		this.setSize(width, height);
+	}
+
+	draw(context){
+		context.beginPath();
+		context.rect(this.x, this.y, this.width, this.height);
+		context.stroke();
+	}
+
+	drawLocation(context, x, y){
+		this.setLocation(x, y)
+		this.draw(context);
+	}
+
+	drawSize(context, width, height){
+		this.setSize(width, height)
+		this.draw(context);
+	}
+
+	drawLocationAndSize(context, x, y){
+		this.setLocation(x, y);
+		this.setSize(width, height);
+		this.draw(context)
+	}
+
 	getX(){
 		return(this.x);
 	}

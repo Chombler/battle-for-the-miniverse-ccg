@@ -22,15 +22,43 @@ server.listen(port_to_listen, () => {
   console.log(`Listening on ${port_to_listen}`);
 });
 
+var dragCard = false;
+var xOffset = 0;
+var yOffset = 0;
+var mouseX = 0;
+var mouseY = 0;
+
 //When a connection is made, starts listening for responses from the server
 io.on('connection', function(client) {
   console.log('Connection made');
 
-	client.on('mouseclick', function(message, x, y) {
-	  console.log(message, x, y);
+	client.on('mouseclick', function(message, client_mouseX, client_mouseY) {
+	  console.log(message, client_mouseX, client_mouseY);
 	});
 
-	client.on('mouselift', function(message, x, y) {
-	  console.log(message, x, y);
+	client.on('mouseclickinside', function(message, client_mouseX, client_mouseY, client_cardX, client_cardY) {
+	  console.log(message, client_mouseX, client_mouseY, client_cardX, client_cardY);
+	  xOffset = client_mouseX - client_cardX;
+	  yOffset = client_mouseY - client_cardY;
+	  dragCard = true;
+	});
+
+	client.on('mousemovement', function(client_mouseX, client_mouseY) {
+		mouseX = client_mouseX;
+		mouseY = client_mouseY;
+	});
+
+	client.on('mouselift', function(message, client_mouseX, client_mouseY) {
+	  console.log(message, client_mouseX, client_mouseY);
+	  dragCard = false;
 	});
 });
+
+
+setInterval(function() {
+	if(dragCard){
+		let newX = mouseX - xOffset;
+		let newY = mouseY - yOffset;
+		io.emit('cardUpdate', newX, newY)
+	}
+}, 1000 / 60);
