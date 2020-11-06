@@ -14,7 +14,7 @@ export class Card{
 		this.height = 100;
 		this.beingDragged = false;
 	}
-	
+
 	setLocation(x, y){
 		this.x = x;
 		this.y = y;
@@ -31,6 +31,7 @@ export class Card{
 	}
 
 	draw(context){
+		context.fillStyle = 'Black';
 		context.beginPath();
 		context.rect(this.x, this.y, this.width, this.height);
 		context.fillText(this.name, this.x + 2, this.y + 10);

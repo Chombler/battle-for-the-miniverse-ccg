@@ -8,13 +8,11 @@ let card_length = 100;
 
 export class Hand{
 	constructor(cards, x, y, width, height){
-		console.log(String(cards));
 		this.cards = cards;
 		this.x = x;
 		this.y = y;
 		this.width = width;
-		this.length = length;
-		this.draggedCardIndex = -1;
+		this.height = height;
 	}
 
 	addCard(card){
@@ -26,15 +24,13 @@ export class Hand{
 	}
 
 	draw(context){
-		context.fillStyle = 'blue';
-		context.strokeStyle = 'Black';
+		context.fillStyle = 'Green';
 
 		context.fillRect(this.x, this.y, this.width, this.height);
 
 		let startX = this.x  + (this.width / 2 - card_length * (this.cards.length / 2));
-		let card;
 
-		for(card of this.cards){
+		for(let card of this.cards){
 			if(card.isBeingDragged()){
 				card.draw(context);
 			}
