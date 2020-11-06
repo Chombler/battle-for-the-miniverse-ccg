@@ -37,7 +37,7 @@ setInterval(function() {
 }, 1000 / 60);
 
 //When a connection is made, tell the console
-socket.on('message', function(data) {
+socket.on('connected', function(data) {
 	console.log(data);
 });
 
