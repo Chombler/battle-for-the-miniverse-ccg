@@ -3,23 +3,16 @@
  */
 
 export class Card{
-	constructor(name, strength, health, cost, x, y, width, height){
+	constructor(name, strength, health, cost, x, y){
 		this.name = name;
 		this.strength = strength;
 		this.health = health;
 		this.cost = cost;
 		this.x = x;
 		this.y = y;
-		this.width = width;
-		this.height = height;
-	}
-
-	withinOutline(clickX, clickY){
-		if(clickX >= this.x && clickX <= (this.x + this.width) &&
-			clickY >= this.y && clickY <= (this.y + this.height)){
-			return(true);
-		}
-		return(false);
+		this.width = 100;
+		this.height = 100;
+		this.beingDragged = false;
 	}
 
 	setLocation(x, y){
@@ -38,8 +31,10 @@ export class Card{
 	}
 
 	draw(context){
+		context.fillStyle = 'Black';
 		context.beginPath();
 		context.rect(this.x, this.y, this.width, this.height);
+		context.fillText(this.name, this.x + 2, this.y + 10);
 		context.stroke();
 	}
 
@@ -53,10 +48,18 @@ export class Card{
 		this.draw(context);
 	}
 
-	drawLocationAndSize(context, x, y){
+	drawLocationAndSize(context, x, y, width,  height){
 		this.setLocation(x, y);
 		this.setSize(width, height);
 		this.draw(context)
+	}
+
+	startDragging(){
+		this.beingDragged = true;
+	}
+
+	stopDragging(){
+		this.beingDragged = false;
 	}
 
 	getX(){
@@ -73,5 +76,13 @@ export class Card{
 
 	getHeight(){
 		return(this.height);
+	}
+
+	getName(){
+		return(this.name);
+	}
+
+	isBeingDragged(){
+		return(this.beingDragged);
 	}
 }

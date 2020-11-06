@@ -27,6 +27,7 @@ var xOffset = 0;
 var yOffset = 0;
 var mouseX = 0;
 var mouseY = 0;
+var index;
 
 //When a connection is made, starts listening for responses from the server
 io.on('connection', function(client) {
@@ -36,8 +37,9 @@ io.on('connection', function(client) {
 	  console.log(message, client_mouseX, client_mouseY);
 	});
 
-	client.on('mouseclickinside', function(message, client_mouseX, client_mouseY, client_cardX, client_cardY) {
-	  console.log(message, client_mouseX, client_mouseY, client_cardX, client_cardY);
+	client.on('mouseclickinside', function(card_index, client_mouseX, client_mouseY, client_cardX, client_cardY) {
+	  console.log('The mouse was clicked within basic zombie', client_mouseX, client_mouseY, client_cardX, client_cardY);
+	  index = card_index;
 	  xOffset = client_mouseX - client_cardX;
 	  yOffset = client_mouseY - client_cardY;
 	  dragCard = true;
@@ -50,6 +52,9 @@ io.on('connection', function(client) {
 
 	client.on('mouselift', function(message, client_mouseX, client_mouseY) {
 	  console.log(message, client_mouseX, client_mouseY);
+	  if(dragCard){
+	  	io.emit('stopDragging', index);
+	  }
 	  dragCard = false;
 	});
 });
@@ -59,6 +64,6 @@ setInterval(function() {
 	if(dragCard){
 		let newX = mouseX - xOffset;
 		let newY = mouseY - yOffset;
-		io.emit('cardUpdate', newX, newY)
+		io.emit('cardUpdate', index, newX, newY);
 	}
 }, 1000 / 60);
