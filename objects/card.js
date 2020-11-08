@@ -2,7 +2,7 @@
  * This class is for cards
  */
 
-export class Card{
+class Card{
 	constructor(name, strength, health, cost, x, y){
 		this.name = name;
 		this.strength = strength;
@@ -28,30 +28,6 @@ export class Card{
 	setLocationAndSize(x, y, width, height){
 		this.setLocation(x, y);
 		this.setSize(width, height);
-	}
-
-	draw(context){
-		context.fillStyle = 'Black';
-		context.beginPath();
-		context.rect(this.x, this.y, this.width, this.height);
-		context.fillText(this.name, this.x + 2, this.y + 10);
-		context.stroke();
-	}
-
-	drawLocation(context, x, y){
-		this.setLocation(x, y)
-		this.draw(context);
-	}
-
-	drawSize(context, width, height){
-		this.setSize(width, height)
-		this.draw(context);
-	}
-
-	drawLocationAndSize(context, x, y, width,  height){
-		this.setLocation(x, y);
-		this.setSize(width, height);
-		this.draw(context)
 	}
 
 	startDragging(){
@@ -86,3 +62,5 @@ export class Card{
 		return(this.beingDragged);
 	}
 }
+
+module.exports = Card;

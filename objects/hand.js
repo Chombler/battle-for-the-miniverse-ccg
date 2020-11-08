@@ -2,11 +2,11 @@
  * this class deals with each player's hand
  */
 
-import { Card } from "./card.js";
+const Card = require('./card.js');
 
 let card_length = 100;
 
-export class Hand{
+class Hand{
 	constructor(cards, x, y, width, height){
 		this.cards = cards;
 		this.x = x;
@@ -49,3 +49,5 @@ export class Hand{
 		return(this.cards);
 	}
 }
+
+module.exports = Hand;

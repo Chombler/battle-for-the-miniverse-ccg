@@ -2,9 +2,9 @@
  * This class stores information about a player's cursor
  */
 
-import { Card } from "./card.js";
+const Card = require('./card.js');
 
-export class Cursor{
+class Cursor{
 	constructor(mouseX, mouseY){
 		this.mouseX = mouseX;
 		this.mouseY = mouseY;
@@ -34,3 +34,5 @@ export class Cursor{
 		return(this.mouseY);
 	}
 }
+
+module.exports = Cursor;
