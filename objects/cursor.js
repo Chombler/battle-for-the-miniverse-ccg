@@ -15,12 +15,12 @@ class Cursor{
 		this.mouseY = mouseY;
 	}
 
-	isWithinCard(card){
-		if(this.mouseX > card.getX() &&
-			this.mouseX < (card.getX() + card.getWidth())
+	isWithin(card){
+		if(this.mouseX > card.x &&
+			this.mouseX < (card.x + card.width)
 			&&
-			this.mouseY > card.getY() &&
-			this.mouseY < (card.getY() + card.getHeight()) ){
+			this.mouseY > card.y &&
+			this.mouseY < (card.y + card.height) ){
 			return(true);
 		}
 		return(false);

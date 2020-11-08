@@ -17,10 +17,6 @@ lane_images['ground'].src = '/images/board/ground.png';
 lane_images['void'] = new Image();
 lane_images['void'].src = '/images/board/void.png';
 
-//When a connection is made, tell the console
-socket.on('connected', function(data) {
-	console.log(data);
-});
 
 socket.on('state', function(gameState) {
 	context.clearRect(0, 0, canvas.width, canvas.height);
@@ -29,54 +25,47 @@ socket.on('state', function(gameState) {
 		drawing.drawBoard(gameState.board);
 	}
 	catch(error){
-		console.log(error);
+		console.log("Board drawing error", error);
 	}
 
-	for(let player in gameState.players){
-		gameState.players[player].draw(context);
+	try{
+		for(let player in gameState.players){
+			drawing.drawPlayer(gameState.players[player]);
+		}
+	}
+	catch(error){
+		console.log("Player drawing error", error);
 	}
 });
 
-/*
+
 //Triggers when the mouse is clicked
 document.addEventListener('mousedown', function(event) {
-	player.getCursor().updatePosition(event.offsetX, event.offsetY);
-	let index = 0;
+	let mouseX = event.offsetX;
+	let mouseY = event.offsetY;
 
-	for(let card of player.getHand().getCards()){
-		if(player.getCursor().isWithinCard(card)){
-			console.log("The mouse was clicked inside", card.getName(),"which has an index of", index);
-			socket.emit('mouseclickinside', index, player.getCursor().getX(), player.getCursor().getY(), card.getX(), card.getY());
-			return;
-		}
-		index++;
-	}
-	//Checks to see if click is within card outline
-	socket.emit('mouseclick', 'The mouse was clicked', player.getCursor().getX(), player.getCursor().getY());
+	socket.emit("mouseclick", mouseX, mouseY);
 });
 
 //Triggers when the mouse is moved
 document.addEventListener('mousemove', function(event) {
-	player.getCursor().updatePosition(event.offsetX, event.offsetY);
+	let mouseX = event.offsetX;
+	let mouseY = event.offsetY;
 
 	//Sends the mouse's current position to the server
-	socket.emit('mousemovement', player.getCursor().getX(), player.getCursor().getY());
+	socket.emit('mousemovement', mouseX, mouseY);
 });
 
 //Triggers when the mouse is de-clicked
 document.addEventListener('mouseup', function(event) {
-	let index = 0;
+	let mouseX = event.offsetX;
+	let mouseY = event.offsetY;
 
-	for(let card of player.getHand().getCards()){
-		if(player.getCursor().isWithinCard(card)){
-			console.log("The mouse was lifted inside", card.getName(), "by player", player.getId(), "the card has an index of", index);
-			socket.emit('mouselift', 'The mouse was lifted inside a card', player.getCursor().getX(), player.getCursor().getY());
-			return;
-		}
-		index++;
-	}
-	//Checks to see if click is within card outline
-	socket.emit('mouselift', 'The mouse was lifted', player.getCursor().getX(), player.getCursor().getY());
+	socket.emit("mouselift", mouseX, mouseY);
 });
-*/
+
+//When the page is loaded, tell the server to create
+//a new player
+socket.emit("newPlayer");
+
 console.log("Loaded game.js");

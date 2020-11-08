@@ -25,51 +25,8 @@ server.listen(port_to_listen, () => {
   console.log(`Listening on ${port_to_listen}`);
 });
 
-var dragCard = false;
 var xOffset = 0;
 var yOffset = 0;
-var mouseX = 0;
-var mouseY = 0;
-var index;
-
-//When a connection is made, starts listening for responses from the server
-io.on('connection', function(client) {
-  console.log('Connection made on id:', client.id);
-
-	client.on('mouseclick', function(message, client_mouseX, client_mouseY) {
-	  console.log(message, client_mouseX, client_mouseY);
-	});
-
-	client.on('mouseclickinside', function(card_index, client_mouseX, client_mouseY, client_cardX, client_cardY) {
-	  console.log('The mouse was clicked within basic zombie', client_mouseX, client_mouseY, client_cardX, client_cardY);
-	  index = card_index;
-	  xOffset = client_mouseX - client_cardX;
-	  yOffset = client_mouseY - client_cardY;
-	  dragCard = true;
-	});
-
-	client.on('mousemovement', function(client_mouseX, client_mouseY) {
-		mouseX = client_mouseX;
-		mouseY = client_mouseY;
-	});
-
-	client.on('mouselift', function(message, client_mouseX, client_mouseY) {
-	  console.log(message, client_mouseX, client_mouseY);
-	  if(dragCard){
-	  	io.emit('stopDragging', index);
-	  }
-	  dragCard = false;
-	});
-});
-
-
-setInterval(function() {
-	if(dragCard){
-		let newX = mouseX - xOffset;
-		let newY = mouseY - yOffset;
-		io.emit('cardUpdate', index, newX, newY);
-	}
-}, 1000 / 60);
 
 const Card = require('./objects/card.js');
 const Board = require('./objects/board.js');
@@ -95,9 +52,96 @@ gameState.board.addLane(2, 'ground');
 gameState.board.addLane(3, 'ground');
 gameState.board.addLane(4, 'void');
 
+//When a connection is made, starts listening for responses from the server
+io.on('connection', function(client) {
+
+  client.on("newPlayer", function(message){
+  	console.log("A New Player has joined the game with the id", client.id);
+  	gameState.players[client.id] = new Player(client.id, player_hand);
+  });
+
+	client.on('mouseclick', function(client_mouseX, client_mouseY) {
+	  console.log("The mouse was clicked at", client_mouseX, client_mouseY, "by player", client.id);
+	  gameState.players[client.id].cursor.updatePosition(client_mouseX, client_mouseY);
+	  let result = checkPlayerCursorLocation(gameState.players[client.id]);
+
+	  if(result.isWithin){
+	  	gameState.players[client.id].hand.cards[result.index].startDragging();
+			let card = gameState.players[client.id].hand.cards[result.index];
+			xOffset = gameState.players[client.id].cursor.mouseX - card.x;
+			yOffset = gameState.players[client.id].cursor.mouseY - card.y;
+	  }
+	  else{
+	  	xOffset = 0;
+	  	yOffset = 0;
+	  }
+	  console.log(xOffset, yOffset);
+
+	});
+
+	client.on('mousemovement', function(client_mouseX, client_mouseY) {
+	  gameState.players[client.id].cursor.updatePosition(client_mouseX, client_mouseY);
+	});
+
+	client.on('mouselift', function(client_mouseX, client_mouseY) {
+	  console.log("The mouse was lifted at", client_mouseX, client_mouseY, "by player", client.id);
+		for(let player in gameState.players){
+			for(let card of gameState.players[player].hand.cards){
+				card.stopDragging();
+			}
+		}
+	});
+
+});
+
+function checkPlayerCursorLocation(player){
+
+	let hand = player.getHand();
+	let cursor = player.getCursor();
+	let result = {
+		isWithin : false,
+		index : 0
+	};
+
+	for(let card of hand.getCards()){
+		if(cursor.isWithin(card)){
+			result.isWithin = true;
+			return(result);
+		}
+		result.index++;
+	}
+	return(result);
+}
+
+
 setInterval(function() {
+	update()
 	io.emit('state', gameState);
 }, 1000 / 10);
 
 
+
+function update(){
+
+	for(let player in gameState.players){
+		let hand = gameState.players[player].hand;
+		let mouseX = gameState.players[player].cursor.mouseX;
+		let mouseY = gameState.players[player].cursor.mouseY;
+
+		let startX = hand.x + (hand.width / 2 - 100 * (hand.cards.length / 2));
+
+		for(let card of gameState.players[player].hand.cards){
+			if(!card.isBeingDragged){
+				card.setLocation(startX, hand.y);
+			}
+			else{
+				card.setLocation(mouseX - xOffset, mouseY - yOffset);
+			}
+
+			startX += 100;
+		}
+
+	}
+
+}
 

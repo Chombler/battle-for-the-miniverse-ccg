@@ -2,17 +2,19 @@
  * This class is for cards
  */
 
+//const CardConstants = require('../constants/card.js');
+
 class Card{
 	constructor(name, strength, health, cost, x, y){
 		this.name = name;
 		this.strength = strength;
 		this.health = health;
 		this.cost = cost;
-		this.x = x;
-		this.y = y;
 		this.width = 100;
 		this.height = 100;
-		this.beingDragged = false;
+		this.x = x;
+		this.y = y;
+		this.isBeingDragged = false;
 	}
 
 	setLocation(x, y){
@@ -20,30 +22,12 @@ class Card{
 		this.y = y;
 	}
 
-	setSize(width, height){
-		this.width = width;
-		this.height = height;
-	}
-
-	setLocationAndSize(x, y, width, height){
-		this.setLocation(x, y);
-		this.setSize(width, height);
-	}
-
 	startDragging(){
-		this.beingDragged = true;
+		this.isBeingDragged = true;
 	}
 
 	stopDragging(){
-		this.beingDragged = false;
-	}
-
-	getX(){
-		return(this.x);
-	}
-
-	getY(){
-		return(this.y);
+		this.isBeingDragged = false;
 	}
 
 	getWidth(){
@@ -53,13 +37,21 @@ class Card{
 	getHeight(){
 		return(this.height);
 	}
+	
+	getX(){
+		return(this.x);
+	}
+
+	getY(){
+		return(this.y);
+	}
 
 	getName(){
 		return(this.name);
 	}
 
 	isBeingDragged(){
-		return(this.beingDragged);
+		return(this.isBeingDragged);
 	}
 }
 
