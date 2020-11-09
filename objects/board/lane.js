@@ -9,6 +9,14 @@ class Lane{
 		this.y = y;
 		this.width = width;
 		this.height = height;
+		this.residants = {};
+	}
+
+	addResident(name, yParam){
+		this.residents[name] = {
+			x : this.x + 30,
+			y : yParam
+		}
 	}
 
 }

@@ -8,8 +8,11 @@ import { CardConstants } from '../constants/card.js';
 
 export class Drawing{
 
-	constructor(context){
-		this.context = context;
+	constructor(canvas){
+		this.width = canvas.width;
+		this.height = canvas.height;
+
+		this.context = canvas.getContext('2d');
 
 		const images = {};
 
@@ -19,6 +22,13 @@ export class Drawing{
 		}
 
 		this.images = images;
+	}
+
+	draw(gameState, client_id){
+		this.context.clearRect(0, 0, this.width, this.height);
+
+		this.drawBoard(gameState.board);
+		this.drawPlayer(gameState.players[client_id]);
 	}
 
 	drawBoard(board){
@@ -37,7 +47,10 @@ export class Drawing{
 
 		for(let card of hand.cards){
 			this.context.strokeRect(card.x, card.y, card.width, card.height);
-			this.context.fillText(card.name, card.x + 10, card.y + 10);
+			this.context.fillText(card.name, card.x + 10, card.y + 15);
+			this.context.fillText(card.cost, card.x + card.width - 15, card.y + 15);
+			let stats = card.strength + "/" + card.health;
+			this.context.fillText(stats, card.x + card.width - 20, card.y + card.height - 5);
 		}
 
 	}

@@ -10,10 +10,10 @@ class Card{
 		this.strength = strength;
 		this.health = health;
 		this.cost = cost;
-		this.width = 100;
-		this.height = 100;
 		this.x = x;
 		this.y = y;
+		this.width = 100;
+		this.height = 100;
 		this.isBeingDragged = false;
 	}
 
@@ -28,30 +28,6 @@ class Card{
 
 	stopDragging(){
 		this.isBeingDragged = false;
-	}
-
-	getWidth(){
-		return(this.width);
-	}
-
-	getHeight(){
-		return(this.height);
-	}
-	
-	getX(){
-		return(this.x);
-	}
-
-	getY(){
-		return(this.y);
-	}
-
-	getName(){
-		return(this.name);
-	}
-
-	isBeingDragged(){
-		return(this.isBeingDragged);
 	}
 }
 

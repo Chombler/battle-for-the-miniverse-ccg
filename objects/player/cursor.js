@@ -2,17 +2,24 @@
  * This class stores information about a player's cursor
  */
 
-const Card = require('./card.js');
+const Card = require('../deck/card.js');
 
 class Cursor{
 	constructor(mouseX, mouseY){
 		this.mouseX = mouseX;
 		this.mouseY = mouseY;
+		this.xOffset = 0;
+		this.yOffset = 0;
 	}
 
 	updatePosition(mouseX, mouseY){
 		this.mouseX = mouseX;
 		this.mouseY = mouseY;
+	}
+
+	setOffsetFrom(card){
+		this.xOffset = this.mouseX - card.x;
+		this.yOffset = this.mouseY - card.y;
 	}
 
 	isWithin(card){
@@ -26,13 +33,6 @@ class Cursor{
 		return(false);
 	}
 
-	getX(){
-		return(this.mouseX);
-	}
-
-	getY(){
-		return(this.mouseY);
-	}
 }
 
 module.exports = Cursor;

@@ -2,7 +2,7 @@
  * this class deals with each player's hand
  */
 
-const Card = require('./card.js');
+const Card = require('../deck/card.js');
 
 let card_length = 100;
 
