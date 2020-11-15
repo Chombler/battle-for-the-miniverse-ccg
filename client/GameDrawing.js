@@ -6,7 +6,7 @@ import { BoardConstants } from '../constants/board.js';
 import { CardConstants } from '../constants/card.js';
 
 
-export class Drawing{
+export class GameDrawing{
 
 	constructor(canvas){
 		this.width = canvas.width;
@@ -27,32 +27,37 @@ export class Drawing{
 	draw(gameState, client_id){
 		this.context.clearRect(0, 0, this.width, this.height);
 
-		this.drawBoard(gameState.board);
+		this.drawBoard(gameState.board, client_id);
 		this.drawPlayer(gameState.players[client_id]);
 	}
 
-	drawBoard(board){
+	drawBoard(board, client_id){
 		for(let lane of board.lanes){
 			this.context.drawImage(this.images[lane.key], lane.x, lane.y, lane.width, lane.height);
+
 		}
 	}
 
 	drawPlayer(player){
-		let hand = player.hand;
+		this.drawHand(player.hand);
+	}
 
+	drawHand(hand){
 		this.context.fillStyle = 'Green';
 		this.context.fillRect(hand.x, hand.y, hand.width, hand.height);
 		this.context.fillStyle = 'Black';
 		this.context.strokeStyle = 'Black';
 
 		for(let card of hand.cards){
-			this.context.strokeRect(card.x, card.y, card.width, card.height);
-			this.context.fillText(card.name, card.x + 10, card.y + 15);
-			this.context.fillText(card.cost, card.x + card.width - 15, card.y + 15);
-			let stats = card.strength + "/" + card.health;
-			this.context.fillText(stats, card.x + card.width - 20, card.y + card.height - 5);
+			this.drawCardinHand(card);
 		}
-
 	}
 
+	drawCardinHand(card){
+		this.context.strokeRect(card.x, card.y, card.width, card.height);
+		this.context.fillText(card.name, card.x + 10, card.y + 15);
+		this.context.fillText(card.cost, card.x + card.width - 15, card.y + 15);
+		let stats = card.strength + "/" + card.health;
+		this.context.fillText(stats, card.x + card.width - 20, card.y + card.height - 5);
+	}
 }

@@ -3,20 +3,30 @@
  */
 
 class Lane{
-	constructor(key, x, y, width, height){
+	constructor(key, x, y, width, height, bug_player_id, alien_player_id){
 		this.key = key;
 		this.x = x;
 		this.y = y;
 		this.width = width;
 		this.height = height;
 		this.residants = {};
+		this.residants[bug_player_id] = {};
+		this.residants[alien_player_id] = {};
 	}
 
-	addResident(name, yParam){
-		this.residents[name] = {
-			x : this.x + 30,
-			y : yParam
+	addResident(client_id, card){
+		this.residents[client_id] = card;
+	}
+
+	removeResident(card){
+		delete this.residents[card.name];
+	}
+
+	isPlayable(card){
+		if(this.residents.length < 1){
+			return(true);
 		}
+		return(false);
 	}
 
 }

@@ -2,7 +2,7 @@
  * this class deals with each player's hand
  */
 
-const Card = require('../deck/card.js');
+const Card = require('../deck/Card.js');
 
 let card_length = 100;
 
@@ -16,16 +16,9 @@ class Hand{
 	}
 
 	addCard(card){
-		if(this.cards.length < 10){
-			this.cards.append(card);
-			return(true);
-		}
-		return(false);
+		this.cards.push(card);
 	}
 
-	getCards(){
-		return(this.cards);
-	}
 }
 
 module.exports = Hand;
