@@ -1,6 +1,6 @@
 
-const Game = require('../../../Game.js');
-const Board = require('../../../board/Board.js');
+const Game = require('../../Game.js');
+const Board = require('../../board/Board.js');
 
 const gameBoard = new Board(null, 800, 600, 0, 0);
 
