@@ -32,7 +32,7 @@ const Player = require('./objects/player/Player.js');
 const Game = require('./objects/Game.js');
 const Cursor = require('./objects/player/Cursor.js');
 const Deck = require('./objects/deck/Deck.js');
-const WaitingRoom = require('./objects/view/overlays/waitingroom/WaitingRoom.js');
+const WaitingRoom = require('./objects/view/overlays/WaitingRoom.js');
 const MainMenu = require('./objects/view/menus/MainMenu.js');
 const BattleMenu = require('./objects/view/menus/BattleMenu.js');
 
