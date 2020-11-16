@@ -11,29 +11,35 @@
  * --Edit Deck
  */
 
-const ToMenuButton = require('../buttons/ToMenuButton.js');
-const ToOverlayButton = require('../buttons/ToOverlayButton.js');
+const Button = require('../buttons/Button.js');
 
-const MainToCollection = new ToMenuButton('Green', 0, 0, 800, 400, 'Black', 'Collection', 200, 200, 'Collection');
-const MainToBattle = new ToMenuButton('Red', 0, 400, 800, 400, 'Black', 'Battle', 200, 600, 'Battle');
+const to_collection_request = {
+	type : "Menu",
+	destination : "Collection",
+	queue_side : null
+}
+
+const to_battle_request = {
+	type : "Menu",
+	destination : "Battle",
+	queue_side : null
+}
+
+const MainToCollection = new Button('Green', 0, 0, 800, 400, 'Black', 'Collection', 200, 200, to_collection_request);
+const MainToBattle = new Button('Red', 0, 400, 800, 400, 'Black', 'Battle', 200, 600, to_battle_request);
 
 class MainMenu{
 	constructor(){
-		this.x = 0;
-		this.y = 0;
-		this.width = 800;
-		this.height = 800;
 		this.buttons = [MainToBattle, MainToCollection];
 	}
 
-	checkClick(cursor, player){
+	checkClick(cursor){
 		for(let button of this.buttons){
 			if(cursor.isWithin(button)){
-				button.onClick(player);
-				return("The mouse was clicked within a button");
+				return(button.onClick());
 			}
 		}
-		return("The mouse was NOT clicked within a button");
+		return(null);
 	}
 
 }

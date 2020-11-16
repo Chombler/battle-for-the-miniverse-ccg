@@ -12,7 +12,8 @@ class Game{
 		this.board = board;
 	}*/
 
-	constructor(board, bug_player, alien_player){
+	constructor(id, board, bug_player, alien_player){
+		this.id = id;
 		this.board = board;
 		this.players = {};
 		this.addPlayer(bug_player, bug_player.socket_id);
@@ -20,7 +21,8 @@ class Game{
 	}
 
 	addPlayer(player, client_id){
-		this.players[client_id] = player;
+		player.setGameId(this.id);
+		this.players[client_id] = player.createGamePlayer();
 	}
 
 	checkMousePosition(client_id, cursor){
