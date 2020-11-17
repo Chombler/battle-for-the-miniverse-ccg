@@ -1,6 +1,6 @@
-# battle-for-the-miniverse-ccg
+# miniverse-mayhem-dcg
 
-This is the source code for the currently titled "Battle for the Miniverse" digital card game.
+This is the source code for the currently titled "Miniverse Mayhem" digital card game.
 
 Language: Javascript
 Environment: Node.js
