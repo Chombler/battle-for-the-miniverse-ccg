@@ -22,7 +22,7 @@ class Game{
 
 	addPlayer(player, client_id){
 		player.setGameId(this.id);
-		this.players[client_id] = player.createGamePlayer();
+		this.players[client_id] = player.createGamePlayer(this.id);
 	}
 
 	checkMousePosition(client_id, cursor){

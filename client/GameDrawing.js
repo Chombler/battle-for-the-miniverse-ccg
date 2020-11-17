@@ -34,7 +34,6 @@ export class GameDrawing{
 	drawBoard(board, client_id){
 		for(let lane of board.lanes){
 			this.context.drawImage(this.images[lane.key], lane.x, lane.y, lane.width, lane.height);
-
 		}
 	}
 
