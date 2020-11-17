@@ -16,6 +16,7 @@ class Player{
 		this.selected_deck_id = 0;
 		this.menu = 'Main';
 		this.overlay = 'None';
+		this.inQueue = false;
 		this.inGame = false;
 		this.waitroomId = null;
 		this.gameId = null;
@@ -50,6 +51,10 @@ class Player{
 		return this.overlay;
 	}
 
+	setGameId(id){
+		this.gameId = id;
+	}
+	
 	createGamePlayer(){
 		return new GamePlayer(this.socket_id, this.decks[this.selected_deck_id]);
 	}

@@ -14,10 +14,13 @@ export class MainMenuDrawing{
 		this.context = canvas.getContext('2d');
 	}
 
-	draw(menu){
+	draw(menu, overlay){
 		this.context.clearRect(0, 0, this.width, this.height);
 
 		this.drawMenu(menu.buttons);
+		if(overlay != null){
+			this.drawOverlay(overlay);
+		}
 	}
 
 	drawMenu(buttons){
@@ -29,21 +32,16 @@ export class MainMenuDrawing{
 		}
 	}
 
-	drawBattle(buttons){
+	drawOverlay(overlay){
 		this.context.fillStyle = 'Black';
-		this.context.fillRect(buttons[0].x, buttons[0].y, buttons[0].width, buttons[0].height);
-		this.context.fillStyle = 'Black';
-		this.context.fillText(buttons[0].text, buttons[0].textX, buttons[0].textY);
+		this.context.fillRect(overlay.x, overlay.y, overlay.width, overlay.height);
 
-		this.context.fillStyle = 'Purple';
-		this.context.fillRect(buttons[1].x, buttons[1].y, buttons[1].width, buttons[1].height);
-		this.context.fillStyle = 'Black';
-		this.context.fillText(buttons[1].text, buttons[1].textX, buttons[1].textY);
-
-		this.context.fillStyle = 'Blue';
-		this.context.fillRect(buttons[2].x, buttons[2].y, buttons[2].width, buttons[2].height);
-		this.context.fillStyle = 'Black';
-		this.context.fillText(buttons[2].text, buttons[2].textX, buttons[2].textY);
+		for(let button of overlay.buttons){
+			this.context.fillStyle = button.color;
+			this.context.fillRect(button.x, button.y, button.width, button.height);
+			this.context.fillStyle = button.textColor;
+			this.context.fillText(button.text, button.textX, button.textY);
+		}
 	}
 
 }

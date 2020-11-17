@@ -19,25 +19,11 @@ const back_request = {
 	queue_side : null
 }
 
-const alien_battle_request = {
-	type : "Queue",
-	destination : "Queue",
-	queue_side : "Alien"
-}
-
-const bug_battle_request = {
-	type : "Queue",
-	destination : "Queue",
-	queue_side : "Bug"
-}
-
 const Back = new Button('Black', 0, 0, 100, 100, 'White', 'Back', 45, 45, back_request);
-const BattleAsAlien = new Button('Purple', 150, 400, 200, 200, 'Black', 'Battle As Alien', 200, 500, alien_battle_request);
-const BattleAsBug = new Button('Blue', 550, 400, 200, 200, 'Black', 'Battle As Bug', 600, 500, bug_battle_request);
 
-class BattleMenu{
+class CollectionMenu{
 	constructor(){
-		this.buttons = [Back, BattleAsAlien, BattleAsBug];
+		this.buttons = [Back];
 	}
 
 	checkClick(cursor){
@@ -51,4 +37,4 @@ class BattleMenu{
 
 }
 
-module.exports = BattleMenu;
+module.exports = CollectionMenu;
