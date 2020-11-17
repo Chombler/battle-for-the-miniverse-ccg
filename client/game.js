@@ -10,6 +10,7 @@ var game_drawing = new GameDrawing(canvas);
 var menu_drawing = new MainMenuDrawing(canvas);
 
 socket.on('Game', function(gameState, id) {
+	console.log("In game");
 	game_drawing.draw(gameState, id);
 });
 

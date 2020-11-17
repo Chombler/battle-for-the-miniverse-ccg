@@ -33,10 +33,9 @@ const Game = require('./objects/Game.js'); //Includes game object
 const Cursor = require('./objects/player/Cursor.js'); //Includes cursor object
 const Deck = require('./objects/deck/Deck.js'); //Includes deck object
 const QueueOverlay = require('./objects/view/overlays/QueueOverlay.js'); //Includes waiting room object
-const MainMenu = require('./objects/view/menus/MainMenu.js'); //Includes main menu object
-const BattleMenu = require('./objects/view/menus/BattleMenu.js'); //Includes battle menu object
-const CollectionMenu = require('./objects/view/menus/CollectionMenu.js'); //Includes collection menu object
 const Queue = require('./objects/Queue.js'); //Includes queue object
+
+const { MainMenu, BattleMenu, CollectionMenu } = require('./objects/view/Menu.js');
 
 var basic_zombie = new Card("Paul", 2, 2, 1, 375, 125);
 var another_zombie = new Card("Bob", 2, 2, 1, 375, 125);
@@ -48,7 +47,6 @@ var deck = new Deck(cards);
 
 var gameId = 0;
 var deckId = 0;
-var roomId = 0;
 
 var cursors = {};
 var players = {};
@@ -56,9 +54,9 @@ var queue = new Queue();
 var games = {};
 
 var menus = {
-	'Main' : new MainMenu(),
-	'Battle' : new BattleMenu(),
-	'Collection' : new CollectionMenu(),
+	'Main' : MainMenu,
+	'Battle' : BattleMenu,
+	'Collection' : CollectionMenu,
 	'Deck Edit' : null
 }
 
@@ -87,6 +85,7 @@ io.on('connection', function(client){
 		let cursor = cursors[client.id];
 		let player_menu = players[client.id].getMenu();
 		let player_overlay = players[client.id].getOverlay();
+
 		if(player_overlay == 'None'){
 			request = menus[player_menu].checkClick(cursor);			
 		}
@@ -104,7 +103,7 @@ io.on('connection', function(client){
 			else if(request.type == "Queue"){
 				players[client.id].setOverlay(request.destination);
 				players[client.id].inQueue = true;
-				queue.join(client.id, request.queue_side,);
+				queue.join(client.id, request.queue_side);
 			}
 			else if(request.type == "Escape"){
 				if(players[client.id].inQueue){
@@ -113,6 +112,10 @@ io.on('connection', function(client){
 				}
 				players[client.id].setOverlay('None');
 			}
+		}
+
+		if(queue.gameReady()){
+			games[gameId] = queue.createGame(players, gameId);
 		}
 
 	});
@@ -132,16 +135,14 @@ io.on('connection', function(client){
 });
 
 setInterval( function() {
-	console.log(queue);
+	console.log(games);
 	for(let player in players){
-		console.log(players[player])
 		let player_socket = players[player].socket_id;
-		if(player.inGame){
+		if(players[player].inGame){
 			io.to(player_socket).emit('Game', games[players[player].gameId], player_socket);
 		}
 		else{
 			let player_menu = players[player].getMenu();
-			console.log(player_menu);
 			let player_overlay = players[player].getOverlay();
 			io.to(player_socket).emit(player_menu, menus[player_menu], overlays[player_overlay], player_socket);			
 		}

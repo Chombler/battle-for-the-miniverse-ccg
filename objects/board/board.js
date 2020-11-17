@@ -14,8 +14,8 @@ class Board{
 		this.bug_player_id = bug_player_id;
 	}
 
-	createCopy(alien_player, bug_player){
-		return new Board(this.lanes, this.width, this.height, alien_player.socket_id, bug_player.socket_id);
+	createCopy(alien_id, bug_id){
+		return new Board(this.lanes, this.width, this.height, alien_id, bug_id);
 	}
 
 	addLane(index, path){

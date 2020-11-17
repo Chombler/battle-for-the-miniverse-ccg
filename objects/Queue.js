@@ -16,31 +16,13 @@ class Queue{
 		this.alien_players = [];
 	}
 
-	join(client_id, side, players, games){
+	join(client_id, side){
 		if(side == "Bug"){
-			this.bugJoin(client_id, players, games);
+			this.bug_players.unshift(client_id);
 		}
 		else if(side == "Alien"){
-			this.alienJoin(client_id, players, games);
+			this.alien_players.unshift(client_id);
 		}
-	}
-
-	bugJoin(bug_id, players, games){
-		for(let index = 0; index < this.alien_players.length; index++){
-			let alien_id = this.alien_players[index];
-			this.alien_players.splice(index, 1);
-			return this.createGame(players[alien_id], players[bug_id]);
-		}
-		this.bug_players.push(bug_id);
-	}
-
-	alienJoin(alien_id, players){
-		for(let index = 0; index < this.bug_players.length; index++){
-			let bug_id = this.bug_players[index];
-			this.bug_players.splice(index, 1);
-			return this.createGame(players[alien_id], players[bug_id]);
-		}
-		this.alien_players.push(alien_id);
 	}
 
 	removePlayer(id){
@@ -58,9 +40,19 @@ class Queue{
 		}
 	}
 
-	createGame(alien_player, bug_player){
-		let new_board = gameBoard.createCopy(alien_player, bug_player);
-		return new Game(new_board, alien_player, bug_player);
+	gameReady(){
+		if(this.bug_players.length > 0 && this.alien_players.length > 0){
+			return(true);
+		}
+		return(false);
+	}
+
+	createGame(players, gameId){
+		let alien_id = this.alien_players.pop();
+		let bug_id = this.bug_players.pop();
+		let new_board = gameBoard.createCopy(alien_id, bug_id);
+
+		return new Game(gameId, new_board, players[alien_id], players[bug_id]);
 	}
 }
 

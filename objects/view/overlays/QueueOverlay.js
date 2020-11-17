@@ -13,7 +13,7 @@
  * --Edit Deck
  */
 
-const Button = require('../buttons/Button.js');
+const Button = require('../Button.js');
 
 const escape_request = {
 	type : "Escape",
