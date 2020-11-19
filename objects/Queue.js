@@ -2,7 +2,7 @@
 const Game = require('./Game.js');
 const Board = require('./board/Board.js');
 
-const gameBoard = new Board(null, 800, 600, 0, 0);
+const gameBoard = new Board(null, 800, 400, 0, 0);
 
 gameBoard.addLane(0, 'heights');
 gameBoard.addLane(1, 'ground');

@@ -6,12 +6,14 @@ const Card = require('../deck/Card.js');
 const Hand = require('./Hand.js');
 const Cursor = require('./Cursor.js');
 const GamePlayer = require('../GamePlayer.js');
-const menu_locations = ['Main', 'Battle', 'Collection', 'Deck Selection'];
-const overlay_locations = ['Deck Creation', 'Waiting Room'];
+const menu_locations = ['Main', 'Battle', 'Collection', 'Deck Edit'];
+const overlay_locations = ['Deck Select', 'Waiting Room'];
 
 class Player{
-	constructor(socket_id, location){
-		this.socket_id = socket_id;
+	constructor(socketId){
+		this.cursor = new Cursor(0,0);
+		this.deckIdIterator = 0;
+		this.socketId = socketId;
 		this.decks = {};
 		this.selected_deck_id = 0;
 		this.menu = 'Main';
@@ -22,9 +24,9 @@ class Player{
 		this.gameId = null;
 	}
 
-	addDeck(deck, deck_id){
-		this.decks[deck_id] = deck;
-		this.selectDeck(deck_id);
+	addDeck(deck){
+		this.decks[this.deckIdIterator] = deck;
+		this.selectDeck(this.deckIdIterator++);
 	}
 
 	selectDeck(deck_id){
@@ -55,12 +57,16 @@ class Player{
 		this.gameId = id;
 	}
 	
+	setIntervalId(id){
+		this.intervalId = id;
+	}
+
 	createGamePlayer(id){
 		this.gameId = id;
 		this.inGame = true;
 		this.inQueue = false;
 		this.overlay = 'None';
-		return new GamePlayer(this.socket_id, this.getCurrentDeck());
+		return new GamePlayer(this.socketId, this.getCurrentDeck());
 	}
 
 }
