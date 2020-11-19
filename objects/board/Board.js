@@ -19,7 +19,7 @@ class Board{
 	}
 
 	addLane(index, path){
-		this.lanes[index] = new Lane(path, this.lane_width * index, 0, this.lane_width, this.height, this.bug_player_id, this.alien_player_id);
+		this.lanes[index] = new Lane(path, this.lane_width * index, 200, this.lane_width, this.height, this.bug_player_id, this.alien_player_id);
 	}
 
 	getLanes(){

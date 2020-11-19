@@ -16,8 +16,8 @@ class Game{
 		this.id = id;
 		this.board = board;
 		this.players = {};
-		this.addPlayer(bug_player, bug_player.socket_id);
-		this.addPlayer(alien_player, alien_player.socket_id);
+		this.addPlayer(bug_player, bug_player.socketId);
+		this.addPlayer(alien_player, alien_player.socketId);
 	}
 
 	addPlayer(player, client_id){

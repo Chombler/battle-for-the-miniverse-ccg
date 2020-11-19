@@ -13,11 +13,6 @@ socket.on('Game', function(gameState, id) {
 	game_drawing.draw(gameState, id);
 });
 
-socket.on('Waiting Rooms', function() {
-	context.clearRect(0, 0, 800, 600);
-	context.fillText("You are waiting", 400, 300);
-});
-
 socket.on('Menu', function(menu, overlay, player_socket) {
 	menu_drawing.draw(menu, overlay);
 });
@@ -50,7 +45,6 @@ document.addEventListener('mouseup', function(event) {
 //When the page is loaded, tell the server to create
 //a new player
 socket.emit("newPlayer");
-
 
 console.log("Loaded game.js");
 
