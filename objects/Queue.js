@@ -51,7 +51,8 @@ class Queue{
 		let alien_id = this.alien_players.pop();
 		let bug_id = this.bug_players.pop();
 		let new_board = gameBoard.createCopy(alien_id, bug_id);
-
+		
+		console.log("New Game created between players", alien_id, "and", bug_id);
 		return new Game(gameId, new_board, players[alien_id], players[bug_id]);
 	}
 }

@@ -10,7 +10,6 @@ var game_drawing = new GameDrawing(canvas);
 var menu_drawing = new MainMenuDrawing(canvas);
 
 socket.on('Game', function(gameState, id) {
-	console.log("In game");
 	game_drawing.draw(gameState, id);
 });
 
@@ -19,16 +18,8 @@ socket.on('Waiting Rooms', function() {
 	context.fillText("You are waiting", 400, 300);
 });
 
-socket.on('Main', function(menu, overlay, player_socket) {
+socket.on('Menu', function(menu, overlay, player_socket) {
 	menu_drawing.draw(menu, overlay);
-});
-
-socket.on('Battle', function(battle, overlay, player_socket) {
-	menu_drawing.draw(battle, overlay);
-});
-
-socket.on('Collection', function(collection, overlay, player_socket) {
-	menu_drawing.draw(collection, overlay);
 });
 
 //Triggers when the mouse is clicked

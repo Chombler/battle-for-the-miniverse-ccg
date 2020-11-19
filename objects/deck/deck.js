@@ -3,7 +3,11 @@ const Card = require('./Card.js');
 
 class Deck{
 	constructor(cards){
-		this.cards = cards;
+		let temp = [];
+		for(let card of cards){
+			temp.push(card.createCopy());
+		}
+		this.cards = temp;
 	}
 
 	drawCard(){
@@ -17,6 +21,10 @@ class Deck{
 			this.cards[i] = temp[index];
 			temp.splice(index, 1);
 		}
+	}
+
+	createCopy(){
+		return new Deck(this.cards);
 	}
 	
 }

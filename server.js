@@ -37,11 +37,12 @@ const Queue = require('./objects/Queue.js'); //Includes queue object
 
 const { MainMenu, BattleMenu, CollectionMenu } = require('./objects/view/Menu.js');
 
-var basic_zombie = new Card("Paul", 2, 2, 1, 375, 125);
-var another_zombie = new Card("Bob", 2, 2, 1, 375, 125);
-var a_third_zombie = new Card("Chris", 2, 2, 1, 375, 125);
+var first_card = new Card("Wall-Nut", 2, 2, 1, 375, 125);
+var second_card = new Card("Sunflower", 2, 2, 1, 375, 125);
+var third_card = new Card("Peashooter", 2, 2, 1, 375, 125);
+var fourth_card = new Card("Chomper", 2, 2, 1, 375, 125);
 
-var cards = [basic_zombie, another_zombie, a_third_zombie];
+var cards = [first_card, second_card, third_card, fourth_card];
 
 var deck = new Deck(cards);
 
@@ -75,7 +76,26 @@ io.on('connection', function(client){
 
 		cursors[client.id] = new Cursor(0, 0);
 		players[client.id] = new Player(client.id, 0);
-		players[client.id].addDeck(deck, deckId++);
+		players[client.id].addDeck(deck.createCopy(), deckId++);
+		
+		setInterval( function() {
+			let player_socket = players[client.id].socket_id;
+			if(players[client.id].inGame){
+				let game_id = players[client.id].gameId;
+				try{
+					games[game_id].update(cursors[client.id]);
+				}
+				catch(error){
+					console.log(error);
+				}
+				io.to(player_socket).emit('Game', games[game_id], player_socket);
+			}
+			else{
+				let player_menu = players[client.id].getMenu();
+				let player_overlay = players[client.id].getOverlay();
+				io.to(player_socket).emit('Menu', menus[player_menu], overlays[player_overlay], player_socket);			
+			}
+		}, 1000 / 1);
 	});
 
 	client.on('mouseclick', function(mouseX, mouseY) {
@@ -116,6 +136,7 @@ io.on('connection', function(client){
 
 		if(queue.gameReady()){
 			games[gameId] = queue.createGame(players, gameId);
+			gameId++;
 		}
 
 	});
@@ -134,18 +155,4 @@ io.on('connection', function(client){
 
 });
 
-setInterval( function() {
-	console.log(games);
-	for(let player in players){
-		let player_socket = players[player].socket_id;
-		if(players[player].inGame){
-			io.to(player_socket).emit('Game', games[players[player].gameId], player_socket);
-		}
-		else{
-			let player_menu = players[player].getMenu();
-			let player_overlay = players[player].getOverlay();
-			io.to(player_socket).emit(player_menu, menus[player_menu], overlays[player_overlay], player_socket);			
-		}
-	}
-}, 1000 / 1);
 

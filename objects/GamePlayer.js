@@ -8,8 +8,12 @@ const Cursor = require('./player/Cursor.js');
 
 class GamePlayer{
 	constructor(socket_id, deck){
+		this.health = 20;
+		this.mana = 0;
+		this.superMana = 0;
 		this.socket_id = socket_id;
 		this.deck = deck;
+		this.createHand();
 		this.mulligan = null;
 	}
 
@@ -36,3 +40,4 @@ class GamePlayer{
 }
 
 module.exports = GamePlayer;
+

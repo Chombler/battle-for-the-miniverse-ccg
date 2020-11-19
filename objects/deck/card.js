@@ -7,9 +7,9 @@
 class Card{
 	constructor(name, strength, health, cost, x, y){
 		this.name = name;
+		this.cost = cost;
 		this.strength = strength;
 		this.health = health;
-		this.cost = cost;
 		this.x = x;
 		this.y = y;
 		this.width = 100;
@@ -28,6 +28,10 @@ class Card{
 
 	stopDragging(){
 		this.isBeingDragged = false;
+	}
+
+	createCopy(){
+		return new Card(this.name, this.strength, this.health, this.cost, this.x, this.y);
 	}
 }
 
