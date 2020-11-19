@@ -42,22 +42,21 @@ class Game{
 		}
 	}
 
-	update(){
+	update(cursor){
 		for(let player in this.players){
-			if(this.updateHand(this.players[player])){
+			if(this.updateHand(this.players[player], cursor)){
 
 			}
 		}
-
 	}
 
-	updateHand(player){
+	updateHand(player, cursor){
 		let dragging = false;
 		let hand = player.hand;
-		let mouseX = player.cursor.mouseX;
-		let mouseY = player.cursor.mouseY;
-		let xOffset = player.cursor.xOffset;
-		let yOffset = player.cursor.yOffset;
+		let mouseX = cursor.mouseX;
+		let mouseY = cursor.mouseY;
+		let xOffset = cursor.xOffset;
+		let yOffset = cursor.yOffset;
 		let startX = hand.x + (hand.width / 2 - 100 * (hand.cards.length / 2));
 
 		for(let card of player.hand.cards){
