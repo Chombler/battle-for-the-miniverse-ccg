@@ -2,11 +2,9 @@
  * Handles drawing all objects in the game
  */
 
-import { BoardConstants } from '../constants/board.js';
-import { CardConstants } from '../constants/card.js';
+const Constants = require('../constants/constants.js');
 
-
-export class GameDrawing{
+class GameDrawing{
 
 	constructor(canvas){
 		this.width = canvas.width;
@@ -16,9 +14,9 @@ export class GameDrawing{
 
 		const images = {};
 
-		for(let key of BoardConstants.IMG_KEYS){
+		for(let key of Constants.board.IMG_KEYS){
 			images[key] = new Image();
-			images[key].src = `${BoardConstants.PATH}/${key}.png`;
+			images[key].src = `${Constants.board.PATH}/${key}.png`;
 		}
 
 		this.images = images;
@@ -28,40 +26,41 @@ export class GameDrawing{
 		this.context.clearRect(0, 0, this.width, this.height);
 
 		this.drawBoard(gameState.board, client_id);
-		for(let player in gameState.players){
-			this.drawPlayer(gameState.players[player], player == client_id ? false : true);
-		}
+		this.drawPlayer(gameState.bug_player, gameState.bug_player.socket_id == client_id ? false : true);
+		this.drawPlayer(gameState.alien_player, gameState.alien_player.socket_id == client_id ? false : true);
 	}
 
 	drawBoard(board, client_id){
+		let index = 0
 		for(let lane of board.lanes){
 			this.context.drawImage(this.images[lane.key], lane.x, lane.y, lane.width, lane.height);
+			index++;
 		}
 	}
 
-	drawPlayer(player, opponent){
-		this.drawHand(player.hand, opponent);
+	drawPlayer(player, isOpponent){
+		this.drawHand(player.hand, isOpponent);
 	}
 
-	drawHand(hand, opponent){
-		if(opponent){
-			this.context.fillStyle = 'Red';
-			this.context.fillRect(0, 0, hand.width, hand.height);
+	drawHand(hand, isOpponent){
+		if(isOpponent){
+			this.context.fillStyle = Constants.hand.OPPONENT_FILL_COLOR;
+			this.context.fillRect(Constants.hand.OPPONENT_X, Constants.hand.OPPONENT_Y, hand.width, hand.height);
 		}
 		else{
-			this.context.fillStyle = 'Green';
+			this.context.fillStyle = Constants.hand.PLAYER_FILL_COLOR;
 			this.context.fillRect(hand.x, hand.y, hand.width, hand.height);
 		}
 		this.context.fillStyle = 'Black';
 		this.context.strokeStyle = 'Black';
 
 		for(let card of hand.cards){
-			this.drawCardinHand(card, opponent);
+			this.drawCardinHand(card, isOpponent);
 		}
 	}
 
-	drawCardinHand(card, opponent){
-		if(opponent){
+	drawCardinHand(card, isOpponent){
+		if(isOpponent){
 			this.context.fillRect(card.x, card.y - 600, card.width, card.height);
 		}
 		else{
@@ -73,3 +72,5 @@ export class GameDrawing{
 		}
 	}
 }
+
+module.exports = GameDrawing;

@@ -10,10 +10,10 @@ const menu_locations = ['Main', 'Battle', 'Collection', 'Deck Edit'];
 const overlay_locations = ['Deck Select', 'Waiting Room'];
 
 class Player{
-	constructor(socketId){
+	constructor(socket_id){
 		this.cursor = new Cursor(0,0);
 		this.deckIdIterator = 0;
-		this.socketId = socketId;
+		this.socket_id = socket_id;
 		this.decks = {};
 		this.selected_deck_id = 0;
 		this.menu = 'Main';
@@ -66,7 +66,7 @@ class Player{
 		this.inGame = true;
 		this.inQueue = false;
 		this.overlay = 'None';
-		return new GamePlayer(this.socketId, this.getCurrentDeck());
+		return new GamePlayer(this.socket_id, this.getCurrentDeck());
 	}
 
 }

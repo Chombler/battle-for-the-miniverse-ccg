@@ -3,29 +3,24 @@
  */
 
 const Lane = require('./Lane.js');
+const Constants = require('../../constants/constants.js');
 
 class Board{
-	constructor(lanes, width, height, alien_player_id, bug_player_id){
+	constructor(lanes, alien_player_id, bug_player_id){
+		this.x = Constants.board.X;
+		this.y = Constants.board.Y;
 		this.lanes = lanes == null ? [] : lanes;
-		this.lane_width = width / 5;
-		this.width = width;
-		this.height = height;
 		this.alien_player_id = alien_player_id;
 		this.bug_player_id = bug_player_id;
 	}
 
 	createCopy(alien_id, bug_id){
-		return new Board(this.lanes, this.width, this.height, alien_id, bug_id);
+		return new Board(this.lanes, alien_id, bug_id);
 	}
 
 	addLane(index, path){
-		this.lanes[index] = new Lane(path, this.lane_width * index, 200, this.lane_width, this.height, this.bug_player_id, this.alien_player_id);
+		this.lanes[index] = new Lane(this.x + index * Constants.board.LANE_WIDTH, this.y, path);
 	}
-
-	getLanes(){
-		return(this.lanes);
-	}
-	
 }
 
 module.exports = Board;

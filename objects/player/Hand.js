@@ -2,21 +2,24 @@
  * this class deals with each player's hand
  */
 
+const Constants = require('../../constants/constants.js');
 const Card = require('../deck/Card.js');
 
-let card_length = 100;
-
 class Hand{
-	constructor(cards, x, y, width, height){
+	constructor(cards){
 		this.cards = cards;
-		this.x = x;
-		this.y = y;
-		this.width = width;
-		this.height = height;
+		this.x = Constants.hand.PLAYER_X;
+		this.y = Constants.hand.PLAYER_Y;
+		this.width = Constants.hand.WIDTH;
+		this.height = Constants.hand.HEIGHT;
 	}
 
 	addCard(card){
 		this.cards.push(card);
+	}
+
+	getCardCount(){
+		return(this.cards.length);
 	}
 
 }

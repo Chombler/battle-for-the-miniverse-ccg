@@ -2,10 +2,8 @@
  * Handles drawing all objects in the game
  */
 
-import { MenuConstants } from '../constants/menu.js';
 
-
-export class MainMenuDrawing{
+class MenuDrawing{
 
 	constructor(canvas){
 		this.width = canvas.width;
@@ -16,6 +14,7 @@ export class MainMenuDrawing{
 
 	draw(menu, overlay){
 		this.context.clearRect(0, 0, this.width, this.height);
+		this.context.strokeRect(0, 0, this.width, this.height);
 
 		this.drawMenu(menu.buttons);
 		if(overlay != null){
@@ -45,3 +44,5 @@ export class MainMenuDrawing{
 	}
 
 }
+
+module.exports  = MenuDrawing;

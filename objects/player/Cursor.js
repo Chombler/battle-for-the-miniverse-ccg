@@ -23,6 +23,7 @@ class Cursor{
 	}
 
 	isWithin(object){
+		console.log(this.mouseX, this.mouseY, object.x, object.x + object.width, object.y, object.y + object.height);
 		if(this.mouseX > object.x &&
 			this.mouseX < (object.x + object.width)
 			&&
