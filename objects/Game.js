@@ -11,10 +11,9 @@ const phases = ['Alien', 'Bug', 'Alien Tricks', 'Battle'];
 class Game{
 	constructor(id, board, bug_player, alien_player){
 		this.id = id;
-		this.board = board;
 		this.players = {};
-		this.bug_player = bug_player.createGamePlayer(this.id);
-		this.alien_player = alien_player.createGamePlayer(this.id);
+		this.bug_player = bug_player.createGamePlayer(this.id, board);
+		this.alien_player = alien_player.createGamePlayer(this.id, board);
 		this.phase = 0;
 	}
 

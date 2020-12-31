@@ -19,7 +19,7 @@ const Constants = {
 		X : 150,
 		Y : 100,
 		WIDTH : 500,
-		HEIGHT : 250,
+		HEIGHT : 125,
 		LANE_WIDTH : 500 / 5
 	},
 

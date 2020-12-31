@@ -25,20 +25,28 @@ class GameDrawing{
 	draw(gameState, client_id){
 		this.context.clearRect(0, 0, this.width, this.height);
 
-		this.drawBoard(gameState.board, client_id);
 		this.drawPlayer(gameState.bug_player, gameState.bug_player.socket_id == client_id ? false : true);
 		this.drawPlayer(gameState.alien_player, gameState.alien_player.socket_id == client_id ? false : true);
 	}
 
-	drawBoard(board, client_id){
+	drawBoard(board, isOpponent){
 		let index = 0
-		for(let lane of board.lanes){
-			this.context.drawImage(this.images[lane.key], lane.x, lane.y, lane.width, lane.height);
-			index++;
+		if(isOpponent){
+			for(let lane of board.lanes){
+				this.context.drawImage(this.images[lane.key], lane.x, lane.y, lane.width, lane.height);
+				index++;
+			}
+		}
+		else{
+			for(let lane of board.lanes){
+				this.context.drawImage(this.images[lane.key], lane.x, lane.y + lane.height, lane.width, lane.height);
+				index++;
+			}
 		}
 	}
 
 	drawPlayer(player, isOpponent){
+		this.drawBoard(player.board, isOpponent);
 		this.drawHand(player.hand, isOpponent);
 	}
 

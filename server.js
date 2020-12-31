@@ -69,11 +69,12 @@ io.on('connection', function(client){
 			console.log("The mouse was clicked at", mouseX, mouseY, "by socket", client.id);
 			if(players[client.id].inGame){
 				games[players[client.id].gameId].getPlayer(client.id).cursor.updatePosition(mouseX, mouseY);
+				games[players[client.id].gameId].checkMousePosition(client.id);
 			}
 			else{
 				players[client.id].cursor.updatePosition(mouseX, mouseY);
+				mouseclick(client.id);
 			}
-			mouseclick(client.id);
 		}
 		catch(error){
 			console.log(error);
@@ -97,7 +98,13 @@ io.on('connection', function(client){
 	client.on('mouselift', function(mouseX, mouseY) {
 		try{
 			console.log("The mouse was lifted at", mouseX, mouseY, "by socket", client.id);
-			
+			if(players[client.id].inGame){
+				games[players[client.id].gameId].getPlayer(client.id).cursor.updatePosition(mouseX, mouseY);
+				games[players[client.id].gameId].stopDragging(client.id);
+			}
+			else{
+				players[client.id].cursor.updatePosition(mouseX, mouseY);
+			}
 		}
 		catch(error){
 			console.log(error);
@@ -134,31 +141,26 @@ function updateGame(gameId){
 }
 
 function mouseclick(client_id){
-	if(players[client_id].inGame){
-		games[players[client_id].gameId].checkMousePosition(client_id);
-	}
-	else{
-		request = view.checkClick(players[client_id]);
+	request = view.checkClick(players[client_id]);
 
-		if(request != null){
-			if(request.type == 'Menu'){
-				players[client_id].setMenu(request.destination);
+	if(request != null){
+		if(request.type == 'Menu'){
+			players[client_id].setMenu(request.destination);
+		}
+		else if(request.type == 'Overlay'){
+			players[client_id].setOverlay(request.destination);
+		}
+		else if(request.type == 'Queue'){
+			players[client_id].setOverlay(request.destination);
+			players[client_id].inQueue = true;
+			queue.join(client_id, request.queue_side);
+		}
+		else if(request.type == 'Escape'){
+			if(players[client_id].inQueue){
+				queue.removePlayer(client_id);
+				players[client_id].inQueue = false;
 			}
-			else if(request.type == 'Overlay'){
-				players[client_id].setOverlay(request.destination);
-			}
-			else if(request.type == 'Queue'){
-				players[client_id].setOverlay(request.destination);
-				players[client_id].inQueue = true;
-				queue.join(client_id, request.queue_side);
-			}
-			else if(request.type == 'Escape'){
-				if(players[client_id].inQueue){
-					queue.removePlayer(client_id);
-					players[client_id].inQueue = false;
-				}
-				players[client_id].setOverlay('None');
-			}
+			players[client_id].setOverlay('None');
 		}
 	}
 }

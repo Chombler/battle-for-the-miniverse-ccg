@@ -7,7 +7,7 @@ const Hand = require('./player/Hand.js');
 const Cursor = require('./player/Cursor.js');
 
 class GamePlayer{
-	constructor(socket_id, deck){
+	constructor(socket_id, deck, board){
 		this.cursor = new Cursor(0, 0);
 		this.health = 20;
 		this.mana = 0;
@@ -16,6 +16,7 @@ class GamePlayer{
 		this.deck = deck;
 		this.createHand();
 		this.mulligan = null;
+		this.board = board;
 	}
 
 	setDeck(deck){

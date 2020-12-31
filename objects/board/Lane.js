@@ -11,6 +11,7 @@ class Lane{
 		this.width = Constants.board.LANE_WIDTH;
 		this.height  = Constants.board.HEIGHT;
 		this.key = key;
+		this.residents = [];
 	}
 }
 

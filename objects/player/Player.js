@@ -61,12 +61,12 @@ class Player{
 		this.intervalId = id;
 	}
 
-	createGamePlayer(id){
+	createGamePlayer(id, board){
 		this.gameId = id;
 		this.inGame = true;
 		this.inQueue = false;
 		this.overlay = 'None';
-		return new GamePlayer(this.socket_id, this.getCurrentDeck());
+		return new GamePlayer(this.socket_id, this.getCurrentDeck(), board);
 	}
 
 }
