@@ -15,7 +15,6 @@ var port_to_listen = process.env.PORT || 3000; //Specifies which port to listen 
 //for use client-side
 app.use('/client', express.static('client'));
 app.use('/images', express.static('images'));
-app.use('/constants', express.static('constants'));
 
 //Default page displayed, always sent to game.html
 app.get('/', (req, res) => {
