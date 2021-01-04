@@ -7,7 +7,8 @@ const Hand = require('./player/Hand.js');
 const Cursor = require('./player/Cursor.js');
 
 class GamePlayer{
-	constructor(socket_id, deck){
+	constructor(socket_id, deck, board){
+		this.cursor = new Cursor(0, 0);
 		this.health = 20;
 		this.mana = 0;
 		this.superMana = 0;
@@ -15,6 +16,7 @@ class GamePlayer{
 		this.deck = deck;
 		this.createHand();
 		this.mulligan = null;
+		this.board = board;
 	}
 
 	setDeck(deck){
@@ -26,7 +28,7 @@ class GamePlayer{
 		for(let i = 0; i < 4; i++){
 			cardsinhand.push(this.deck.drawCard());
 		}
-		this.hand = new Hand(cardsinhand, 0, 600, 800, 200);
+		this.hand = new Hand(cardsinhand);
 	}
 
 	drawCard(){

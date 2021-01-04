@@ -17,6 +17,14 @@ class View{
 		}
 	}
 
+	checkClick(player){
+		if(player.overlay == 'None'){
+			return(this.menus[player.menu].checkClick(player.cursor));			
+		}
+		else{
+			return(this.overlays[player.overlay].checkClick(player.cursor));			
+		}
+	}
 }
 
 module.exports = View;

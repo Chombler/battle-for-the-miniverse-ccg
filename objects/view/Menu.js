@@ -41,8 +41,8 @@ const to_battle_request = {
 	queue_side : null
 }
 
-const MainToCollection = new Button('Green', 0, 0, 800, 400, 'Black', 'Collection', 200, 200, to_collection_request);
-const MainToBattle = new Button('Red', 0, 400, 800, 400, 'Black', 'Battle', 200, 600, to_battle_request);
+const MainToCollection = new Button('Green', 500, 75, 200, 150, 'Black', 'Collection', 571, 139, to_collection_request);
+const MainToBattle = new Button('Red', 50, 75, 400, 225, 'Black', 'Battle', 221, 176, to_battle_request);
 
 const MainMenu = new Menu([MainToCollection, MainToBattle]);
 
@@ -64,9 +64,9 @@ const bug_battle_request = {
 	queue_side : "Bug"
 }
 
-const BackBattle = new Button('Black', 0, 0, 100, 100, 'White', 'Back', 45, 45, battle_back_request);
-const BattleAsAlien = new Button('Purple', 150, 400, 200, 200, 'Black', 'Battle As Alien', 200, 500, alien_battle_request);
-const BattleAsBug = new Button('Blue', 550, 400, 200, 200, 'Black', 'Battle As Bug', 600, 500, bug_battle_request);
+const BackBattle = new Button('Black', 0, 0, 75, 75, 'White', 'Back', 24, 31, battle_back_request);
+const BattleAsAlien = new Button('Purple', 25, 150, 125, 50, 'Black', 'Battle As Alien', 48, 168, alien_battle_request);
+const BattleAsBug = new Button('Blue', 25, 225, 125, 50, 'Black', 'Battle As Bug', 52, 243, bug_battle_request);
 
 const BattleMenu = new Menu([BackBattle, BattleAsAlien, BattleAsBug]);
 
@@ -76,7 +76,7 @@ const collection_back_request = {
 	queue_side : null
 }
 
-const BackCollection = new Button('Black', 0, 0, 100, 100, 'White', 'Back', 45, 45, collection_back_request);
+const BackCollection = new Button('Black', 0, 0, 75, 75, 'White', 'Back', 24, 31, collection_back_request);
 
 const CollectionMenu = new Menu([BackCollection]);
 

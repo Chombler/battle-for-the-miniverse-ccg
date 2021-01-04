@@ -2,7 +2,7 @@
  * This class is for cards
  */
 
-//const CardConstants = require('../constants/card.js');
+const Constants = require('../../constants/constants.js');
 
 class Card{
 	constructor(name, strength, health, cost, x, y){
@@ -12,11 +12,15 @@ class Card{
 		this.health = health;
 		this.x = x;
 		this.y = y;
-		this.width = 100;
-		this.height = 100;
+		this.width = Constants.card.WIDTH;
+		this.height = Constants.card.HEIGHT;
 		this.isBeingDragged = false;
 	}
 
+	setWidth(width){
+		this.width = width;
+	}
+	
 	setLocation(x, y){
 		this.x = x;
 		this.y = y;

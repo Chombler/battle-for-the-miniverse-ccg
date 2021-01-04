@@ -1,5 +1,5 @@
-import { GameDrawing } from './GameDrawing.js';
-import { MainMenuDrawing } from './MainMenuDrawing.js';
+const GameDrawing = require('./GameDrawing.js');
+const MenuDrawing = require('./MenuDrawing.js');
 
 var socket = io();
 
@@ -7,7 +7,7 @@ var canvas = document.getElementById('canvasId');
 var context = canvas.getContext('2d');
 
 var game_drawing = new GameDrawing(canvas);
-var menu_drawing = new MainMenuDrawing(canvas);
+var menu_drawing = new MenuDrawing(canvas);
 
 socket.on('Game', function(gameState, id) {
 	game_drawing.draw(gameState, id);

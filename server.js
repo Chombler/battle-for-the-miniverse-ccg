@@ -60,43 +60,74 @@ io.on('connection', function(client){
 		console.log("A new Player", client.id, "has joined the game");
 		let player = new Player(client.id);
 		player.addDeck(deck.createCopy());
-		player.setIntervalId(setInterval(function() { emitPlayer(client.id); } , 1000/1) );
+		player.setIntervalId(setInterval(function() { emitPlayer(client.id); } , 1000 / 1) );
 		players[client.id] = player;
 	});
 
 	client.on('mouseclick', function(mouseX, mouseY) {
-		console.log("The mouse was clicked at", mouseX, mouseY, "by socket", client.id);
-		players[client.id].cursor.updatePosition(mouseX, mouseY);
-		mouseclick(client.id);
+		try{
+			console.log("The mouse was clicked at", mouseX, mouseY, "by socket", client.id);
+			if(players[client.id].inGame){
+				games[players[client.id].gameId].getPlayer(client.id).cursor.updatePosition(mouseX, mouseY);
+				games[players[client.id].gameId].checkMousePosition(client.id);
+			}
+			else{
+				players[client.id].cursor.updatePosition(mouseX, mouseY);
+				mouseclick(client.id);
+			}
+		}
+		catch(error){
+			console.log(error);
+		}
 	});
 
 	client.on('mousemovement', function(mouseX, mouseY) {
-		players[client.id].cursor.updatePosition(mouseX, mouseY);
+		try{
+			if(players[client.id].inGame){
+				games[players[client.id].gameId].getPlayer(client.id).cursor.updatePosition(mouseX, mouseY);
+			}
+			else{
+				players[client.id].cursor.updatePosition(mouseX, mouseY);
+			}
+		}
+		catch(error){
+			console.log(error);
+		}
 	});
 
 	client.on('mouselift', function(mouseX, mouseY) {
-		console.log("The mouse was lifted at", mouseX, mouseY, "by socket", client.id);
+		try{
+			console.log("The mouse was lifted at", mouseX, mouseY, "by socket", client.id);
+			if(players[client.id].inGame){
+				games[players[client.id].gameId].getPlayer(client.id).cursor.updatePosition(mouseX, mouseY);
+				games[players[client.id].gameId].stopDragging(client.id);
+			}
+			else{
+				players[client.id].cursor.updatePosition(mouseX, mouseY);
+			}
+		}
+		catch(error){
+			console.log(error);
+		}
 	});
 
 	client.on('disconnect', function(mouseX, mouseY) {
-		clearInterval(players[client.id].intervalId);
-		delete players[client.id];
-		console.log("The Player", client.id, "has left the game");
+		try{
+			clearInterval(players[client.id].intervalId);
+			delete players[client.id];
+			console.log("The Player", client.id, "has left the game");
+		}
+		catch(error){
+			console.log(error);
+		}
 	});
 
 });
 
 function emitPlayer(client_id){
-	let player_socket = players[client_id].socketId;
+	let player_socket = players[client_id].socket_id;
 	if(players[client_id].inGame){
-		let game_id = players[client_id].gameId;
-		try{
-			games[game_id].update(players[client_id].cursor);
-		}
-		catch(error){
-			console.log(error);
-		}
-		io.to(player_socket).emit('Game', games[game_id], player_socket);
+		io.to(player_socket).emit('Game', games[players[client_id].gameId], player_socket);
 	}
 	else{
 		let player_menu = players[client_id].getMenu();
@@ -105,16 +136,12 @@ function emitPlayer(client_id){
 	}
 }
 
+function updateGame(gameId){
+	games[gameId].update();
+}
 
 function mouseclick(client_id){
-	let cursor = players[client_id].cursor;
-
-	if(players[client_id].getOverlay() == 'None'){
-		request = view.menus[players[client_id].getMenu()].checkClick(cursor);			
-	}
-	else{
-		request = view.overlays[players[client_id].getOverlay()].checkClick(cursor);			
-	}
+	request = view.checkClick(players[client_id]);
 
 	if(request != null){
 		if(request.type == 'Menu'){
@@ -136,11 +163,11 @@ function mouseclick(client_id){
 			players[client_id].setOverlay('None');
 		}
 	}
-
-	if(queue.gameReady()){
-		console.log(players);
-		games[gameId] = queue.createGame(players, gameId);
-		gameId++;
-	}
 }
 
+setInterval(function(){
+	while(queue.gameReady()){
+		games[gameId] = queue.createGame(players, gameId);
+		setInterval( function(){updateGame(gameId)}, 1000 / 1);
+	}
+}, 1000 / 1);
