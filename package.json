@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/Chombler/miniverse-mayhem-dcg#readme",
   "dependencies": {
-    "browserify": "^17.0.0",
+    "boardgame.io": "^0.42.2",
     "express": "^4.17.1",
     "socket.io": "^3.0.4"
   }
