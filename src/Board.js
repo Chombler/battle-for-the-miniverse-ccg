@@ -20,20 +20,13 @@ export class BattleBoard extends React.Component{
 			width: '100%',
 		};
 
-		const rowStyle ={
-			height: '50%',
-		};
-
-		const tableStyle ={
-			height: '100%',
-		};
-
 		const textStyle = {
 			position: 'absolute',
 			top: '50%',
 			left: '50%',
 			transform: 'translate(-50%, -50%)',
-		}
+		};
+		
 		let board = [];
 
 		for(let row = 0; row < 2; row++){
@@ -46,12 +39,12 @@ export class BattleBoard extends React.Component{
 						<div style = {textStyle}>{this.props.G.board[id]}</div>
 					</td>);			
 			}
-			board.push(<tr style = {rowStyle} key={row}>{lanes}</tr>);
+			board.push(<tr key={row}>{lanes}</tr>);
 		}
 
 		return(
 			<div>
-				<table style = {tableStyle} id = "Board">
+				<table id = "Board">
 					<tbody>{board}</tbody>
 				</table>
 			</div>

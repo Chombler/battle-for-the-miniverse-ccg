@@ -3,4 +3,4 @@ const { Battle } = require('./Game');
 
 const server = Server({ games: [Battle] });
 
-server.run(3000);
+server.run(8000);
