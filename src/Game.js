@@ -1,6 +1,8 @@
 import { INVALID_MOVE } from 'boardgame.io/core';
 
 export const Battle = {
+	name: 'battle',
+
 	setup: function(){
 		return({
 			board: Array(10).fill(null)
