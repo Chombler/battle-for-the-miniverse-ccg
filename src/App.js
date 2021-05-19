@@ -33,7 +33,6 @@ class App extends React.Component {
       playerID: '0',
       playerName: this.state.playerName,
     });
-    console.log("matchID", matchID, "credentials", playerCredentials);
     this.setState({
       view: 'battle',
       matchID: matchID,
@@ -46,7 +45,6 @@ class App extends React.Component {
     let { matches } = await lobby.listMatches('battle');
 
     for(let match of matches){
-      console.log(match);
       if(typeof match.players[1].name === 'undefined'){
         return(match.matchID);
       }
@@ -97,7 +95,6 @@ class App extends React.Component {
       );
     }
     if(this.state.view === 'battle'){
-      console.log(this.state);
       return(
         <div>
           <BattleClient credentials={this.state.credentials} playerID={this.state.playerID} matchID={this.state.matchID} />
